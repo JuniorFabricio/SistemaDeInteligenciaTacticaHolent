@@ -32,13 +32,13 @@ public class EscuadronDAOImpl implements EscuadronDAO {
     );
     """;
 
-        try (Connection conn = conexionDB.conectar(); Statement stmt = conn.createStatement()) {
+        try (Connection conn = conexionDB.conectar(); Statement st = conn.createStatement()) {
 
-            stmt.execute(sql);
-            System.out.println("[SISTEMA OPERATIVO] Tabla 'escuadrones_imperiales' verificada en el sector de datos.");
+            st.execute(sql);
+            System.out.println(" Tabla ya esta creada y lista para usar");
 
         } catch (SQLException e) {
-            System.err.println("[ALERTA CRÍTICA] Fallo al generar la estructura DDL: " + e.getMessage());
+            System.err.println("Problema a la hora de crear la tabla o no existe " + e.getMessage());
         }
     }
 
@@ -61,10 +61,10 @@ public class EscuadronDAOImpl implements EscuadronDAO {
             ps.setInt(4, escuadron.getNumeroCazas());
 
             ps.executeUpdate();
-            System.out.println("Informe transmitido: " + escuadron.getNombre() + " registrado.");
+            System.out.println("Se ha resgistro correctamente: " + escuadron.getNombre() + " registrado.");
 
         } catch (SQLException e) {
-            System.err.println("Error en inserción de datos: " + e.getMessage());
+            System.err.println("Error en al resgistrar dicho usuario: " + e.getMessage());
         }
 
     }
@@ -76,11 +76,11 @@ public class EscuadronDAOImpl implements EscuadronDAO {
         String sql = "SELECT * from escuadrones_imperiales";
 
         try (Connection conn = conexionDB.conectar(); 
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs=ps.executeQuery()) {
+                Statement st = conn.createStatement();
+                ResultSet rs=st.executeQuery(sql)) {
                while(rs.next())
                {
-                  lista.add(new EscuadronDTO(rs.getString("id_escuadron"),rs.getString("nombre"),rs.getString("sector_base"),rs.getInt("numero_caza")));
+                  lista.add(new EscuadronDTO(rs.getString("id_escuadron"),rs.getString("nombre"),rs.getString("sector_base"),rs.getInt("numero_cazas")));
                   
                }
             
