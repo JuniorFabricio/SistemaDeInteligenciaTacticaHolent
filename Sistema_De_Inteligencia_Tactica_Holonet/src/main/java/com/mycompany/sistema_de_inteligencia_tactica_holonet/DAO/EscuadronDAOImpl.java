@@ -32,7 +32,7 @@ public class EscuadronDAOImpl implements EscuadronDAO {
     );
     """;
 
-        try (Connection conn = conexionDB.conectar(); Statement st = conn.createStatement()) {
+        try (Connection conn = conexionDB.conectar(); PreparedStatement st = conn.prepareCall(sql)) {
 
             st.execute(sql);
             System.out.println(" Tabla ya esta creada y lista para usar");
@@ -76,8 +76,8 @@ public class EscuadronDAOImpl implements EscuadronDAO {
         String sql = "SELECT * from escuadrones_imperiales";
 
         try (Connection conn = conexionDB.conectar(); 
-                Statement st = conn.createStatement();
-                ResultSet rs=st.executeQuery(sql)) {
+                PreparedStatement st = conn.prepareCall(sql);
+                ResultSet rs=st.executeQuery()) {
                while(rs.next())
                {
                   lista.add(new EscuadronDTO(rs.getString("id_escuadron"),rs.getString("nombre"),rs.getString("sector_base"),rs.getInt("numero_cazas")));
